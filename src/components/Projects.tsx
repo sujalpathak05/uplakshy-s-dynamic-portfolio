@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ExternalLink, MessageCircle } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 const projects = [
   {
@@ -7,15 +7,12 @@ const projects = [
     url: "https://sharmapharmacy.com",
     desc: "Complete pharmacy management system with inventory tracking, online ordering, and automated operations. Built with modern web technologies.",
     tags: ["Full Stack", "E-Commerce", "Inventory"],
-    hasChat: true,
-    chatNumber: "8218552718",
   },
   {
     title: "KikaKiki.in",
     url: "https://kikakiki.in",
     desc: "Dynamic web platform designed and developed from scratch with a focus on user experience and performance.",
     tags: ["Web Design", "Development", "UI/UX"],
-    hasChat: false,
   },
 ];
 
@@ -75,17 +72,6 @@ const Projects = () => {
                   ))}
                 </div>
 
-                {project.hasChat && (
-                  <a
-                    href={`https://wa.me/91${project.chatNumber}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors border border-primary/20"
-                  >
-                    <MessageCircle size={16} />
-                    Chat with us
-                  </a>
-                )}
               </div>
             </motion.div>
           ))}

@@ -12,7 +12,7 @@ const Contact = () => {
           transition={{ duration: 0.8 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2">04 — Contact</p>
+          <p className="font-mono text-xs text-primary tracking-widest uppercase mb-2">05 — Contact</p>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Let's <span className="gradient-text">Connect</span>
           </h2>

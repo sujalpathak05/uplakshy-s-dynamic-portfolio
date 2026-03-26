@@ -1,8 +1,43 @@
 import { motion } from "framer-motion";
 import uplakshy from "@/assets/uplakshy.jpeg";
 import { Github, Linkedin, Instagram, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const roles = [
+  "Full Stack MERN Developer",
+  "Shopify Expert",
+  "Web Systems Architect",
+  "Inventory Systems Builder",
+];
 
 const Hero = () => {
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [displayText, setDisplayText] = useState("");
+
+  useEffect(() => {
+    const current = roles[roleIndex];
+    const speed = isDeleting ? 40 : 80;
+
+    if (!isDeleting && charIndex === current.length) {
+      setTimeout(() => setIsDeleting(true), 1500);
+      return;
+    }
+    if (isDeleting && charIndex === 0) {
+      setIsDeleting(false);
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setDisplayText(current.substring(0, isDeleting ? charIndex - 1 : charIndex + 1));
+      setCharIndex((prev) => prev + (isDeleting ? -1 : 1));
+    }, speed);
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting, roleIndex]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
       {/* Ambient glow */}
@@ -67,7 +102,7 @@ const Hero = () => {
           >
             <div className="flex items-center gap-3 font-mono text-sm text-muted-foreground">
               <span className="w-8 h-px bg-primary/50" />
-              Full Stack MERN Developer & Shopify Expert
+              <span>{displayText}<span className="animate-pulse text-primary">|</span></span>
               <span className="w-8 h-px bg-primary/50" />
             </div>
             <p className="text-muted-foreground max-w-md text-sm leading-relaxed">

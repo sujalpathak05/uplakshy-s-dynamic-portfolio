@@ -241,7 +241,7 @@ const Hero = () => {
               {[
                 { icon: Linkedin, href: siteProfile.linkedinHref, label: "LinkedIn" },
                 { icon: Instagram, href: siteProfile.instagramHref, label: "Instagram" },
-                { icon: Github, href: "#", label: "GitHub" },
+                { icon: Github, href: siteProfile.githubHref, label: "GitHub" },
               ].map((social) => (
                 <a
                   key={social.label}

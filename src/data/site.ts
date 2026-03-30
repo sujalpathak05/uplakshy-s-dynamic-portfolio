@@ -8,6 +8,7 @@ export const siteProfile = {
   whatsappHref: "https://wa.me/918218552718",
   linkedinHref: "https://www.linkedin.com/in/uplakshy-pathak-4988682b6/",
   instagramHref: "https://www.instagram.com/sujal_pathak_05/",
+  githubHref: "https://github.com/sujalpathak05",
   portfolioHref: "https://uplakshypathak-portfolio.netlify.app/",
   canonicalHref: "https://uplakshypathak.com",
   keywords: [

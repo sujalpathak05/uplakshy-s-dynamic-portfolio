@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Menu, Sparkles, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
+
+import { siteProfile } from "@/data/site";
 
 const navItems = [
   { label: "About", href: "#about" },
@@ -10,70 +13,142 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
+const topKeywords = [
+  "Noida Best Developer",
+  "Best AI Developer",
+  "Hyper-Fast Prompt Engineering",
+  "MERN + AI + Motion Design",
+];
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const resolvedItems = useMemo(
+    () =>
+      navItems.map((item) => ({
+        ...item,
+        target: location.pathname === "/" ? item.href : `/${item.href}`,
+      })),
+    [location.pathname],
+  );
+
   return (
     <>
-      <motion.nav
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-background/80 backdrop-blur-xl border-b border-border" : ""
-        }`}
-      >
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <a href="#" className="font-bold text-lg gradient-text">UP.</a>
-          
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-sm text-muted-foreground hover:text-primary transition-colors font-mono"
-              >
-                {item.label}
-              </a>
-            ))}
+      <div className="fixed inset-x-0 top-0 z-50">
+        <motion.div
+          initial={{ y: -24, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.55 }}
+          className="border-b border-white/10 bg-black/35 backdrop-blur-xl"
+        >
+          <div className="overflow-hidden py-2">
+            <div className="keyword-marquee whitespace-nowrap">
+              {[...topKeywords, ...topKeywords].map((keyword, index) => (
+                <span
+                  key={`${keyword}-${index}`}
+                  className="mx-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1 text-[11px] font-mono uppercase tracking-[0.26em] text-primary"
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {keyword}
+                </span>
+              ))}
+            </div>
           </div>
+        </motion.div>
 
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-foreground"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </motion.nav>
+        <motion.nav
+          initial={{ y: -80 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.65 }}
+          className={`transition-all duration-300 ${scrolled ? "border-b border-white/10 bg-background/80 shadow-[0_20px_60px_hsl(220_20%_4%_/_0.45)] backdrop-blur-xl" : "bg-transparent"}`}
+        >
+          <div className="container mx-auto mt-[1px] flex items-center justify-between px-6 py-4">
+            <a href="/" className="flex items-center gap-3">
+              <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-2 font-mono text-sm text-primary">
+                {siteProfile.shortName}
+              </span>
+              <span className="hidden text-sm font-medium text-muted-foreground md:inline">
+                {siteProfile.title}
+              </span>
+            </a>
 
-      {/* Mobile menu */}
+            <div className="hidden items-center gap-8 md:flex">
+              {resolvedItems.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.target}
+                  className="text-sm font-mono text-muted-foreground transition-colors hover:text-primary"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
+
+            <div className="hidden items-center gap-3 md:flex">
+              <a
+                href={siteProfile.phoneHref}
+                className="rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-mono uppercase tracking-[0.24em] text-primary transition-all hover:border-primary/40 hover:bg-primary/15"
+              >
+                Call
+              </a>
+              <a
+                href={siteProfile.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-foreground px-4 py-2 text-xs font-mono uppercase tracking-[0.24em] text-background transition-transform hover:-translate-y-0.5"
+              >
+                WhatsApp
+              </a>
+            </div>
+
+            <button onClick={() => setMobileOpen(!mobileOpen)} className="text-foreground md:hidden" aria-label="Toggle menu">
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </motion.nav>
+      </div>
+
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-40 bg-background/95 pt-28 backdrop-blur-xl"
           >
-            <div className="flex flex-col items-center gap-8">
-              {navItems.map((item) => (
+            <div className="container mx-auto flex flex-col items-center gap-8 px-6 pt-10">
+              {resolvedItems.map((item) => (
                 <a
                   key={item.label}
-                  href={item.href}
+                  href={item.target}
                   onClick={() => setMobileOpen(false)}
-                  className="text-2xl font-semibold text-foreground hover:text-primary transition-colors"
+                  className="text-2xl font-semibold text-foreground transition-colors hover:text-primary"
                 >
                   {item.label}
                 </a>
               ))}
+
+              <div className="mt-4 flex flex-col gap-4 text-center">
+                <a href={siteProfile.phoneHref} className="text-lg font-medium text-primary">
+                  {siteProfile.phone}
+                </a>
+                <a
+                  href={siteProfile.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-foreground px-5 py-3 text-sm font-semibold text-background"
+                >
+                  WhatsApp
+                </a>
+              </div>
             </div>
           </motion.div>
         )}

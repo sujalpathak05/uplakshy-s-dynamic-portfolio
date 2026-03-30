@@ -58,6 +58,7 @@
   body {
     @apply bg-background text-foreground font-sans;
     font-family: 'Space Grotesk', sans-serif;
+    overflow-x: hidden;
   }
 
   html {
@@ -97,5 +98,21 @@
       linear-gradient(hsl(220 14% 16% / 0.5) 1px, transparent 1px),
       linear-gradient(90deg, hsl(220 14% 16% / 0.5) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  .keyword-marquee {
+    display: inline-flex;
+    min-width: max-content;
+    animation: marquee 24s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
